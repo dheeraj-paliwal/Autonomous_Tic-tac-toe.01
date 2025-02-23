@@ -1,0 +1,75 @@
+
+package com.mcnz.tictactoe;
+
+public class Main {
+
+  public static void main(String[] args) {
+
+    char[] board = { '1', '2', '3',
+                     '4', '5', '6',
+                     '7', '8', '9' };
+
+    var numberOfSquaresPlayed = 0;
+    var whoseTurnItIs = 'x';
+    var gameEndingMessage = "";
+
+    while (numberOfSquaresPlayed < 9) {
+      printTheBoard(board);
+      getTheUserToSelectTheirSquare(board, whoseTurnItIs);
+  
+      if (theyWonTheGame(board, whoseTurnItIs)) {
+        gameEndingMessage = "You won!!! Congratulations!";
+        break;
+      } else if (numberOfSquaresPlayed == 9) {
+        gameEndingMessage = "A tough battle fought to a draw!";
+      } else {
+        numberOfSquaresPlayed++;
+        whoseTurnItIs = (whoseTurnItIs == 'x') ? 'o' : 'x';
+        continue;
+      }
+    }
+    printTheBoard(board);
+    System.out.println(gameEndingMessage);
+  }
+
+  private static void printTheBoard(char[] board) {
+    System.out.printf("%n %s | %s | %s %n", board[0], board[1], board[2]);
+    System.out.println(" - + - + - ");
+    System.out.printf(" %s | %s | %s %n",   board[3], board[4], board[5]);
+    System.out.println(" - + - + - ");
+    System.out.printf(" %s | %s | %s %n%n", board[6], board[7], board[8]);
+  }
+
+  private static void getTheUserToSelectTheirSquare(char[] board, char whoseTurnItIs) {
+
+    do {
+      try {
+        System.out.printf("Would player %s please choose an unchosen square:", whoseTurnItIs);
+        var scanner = new java.util.Scanner(System.in);
+        var input = scanner.nextInt();
+
+        if (Character.isDigit(board[input - 1])) {
+          board[input - 1] = whoseTurnItIs;
+          break;
+        } else {
+          System.out.println("Sorry, that's taken.");
+        }
+      } catch (Exception e) {
+        System.out.println("Something went wrong. Let's try that again.");
+      }
+      printTheBoard(board);
+    } while (true);
+  }
+
+  private static boolean theyWonTheGame(char[] board, char whoseTurnItIs) {
+    return (board[0] + board[1] + board[2] == (whoseTurnItIs * 3)) // first row  
+    || (board[3] + board[4] + board[5] == (whoseTurnItIs * 3))     // second row
+    || (board[6] + board[7] + board[8] == (whoseTurnItIs * 3))     // third row
+    || (board[0] + board[3] + board[6] == (whoseTurnItIs * 3))     // first column
+    || (board[1] + board[4] + board[7] == (whoseTurnItIs * 3))     // second column
+    || (board[2] + board[5] + board[8] == (whoseTurnItIs * 3))     // third column
+    || (board[0] + board[4] + board[8] == (whoseTurnItIs * 3))     // first cross
+    || (board[2] + board[4] + board[6] == (whoseTurnItIs * 3));    // second cross
+  }
+} 
+ 
